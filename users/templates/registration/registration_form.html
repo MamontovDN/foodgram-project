@@ -24,7 +24,7 @@
                     <div class="form__field-group">
                         {{ field|addclass:"form__input" }}
                         {% if field.help_text %}
-                            <small id="{{ field.id_for_label }}-help" class="">{{ field.help_text|safe }}</small>
+                            <small id="{{ field.id_for_label }}-help" class="help">{{ field.help_text|safe }}</small>
                         {% endif %}
                         {% for error in field.errors %}
                             <span class="form__error">{{ error }}</span>
