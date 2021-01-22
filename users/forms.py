@@ -15,6 +15,10 @@ class RegForm(RegistrationForm):
         model = User
         fields = ('first_name', 'last_name', 'username', 'email',
                   'password1', 'password2')
+        help_texts = {
+            'username': ('<ul><li>Не более 150 символов.</li>'
+                         '<li>Только буквы, цифры и символы @/./+/-/_.</li></ul>')
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
