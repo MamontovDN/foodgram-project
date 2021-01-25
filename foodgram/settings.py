@@ -32,6 +32,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'multiselectfield',
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -129,3 +131,11 @@ REGISTRATION_AUTO_LOGIN = True
 REGISTRATION_FORM = 'users.forms.RegForm'
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'index'
+
+
+# === rest framework ===
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+}
