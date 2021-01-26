@@ -3,9 +3,9 @@ from django.db import models
 from users.models import User
 from multiselectfield import MultiSelectField
 
-TAGS = (('breakfast', 'завтрак'),
-        ('dinner', 'обед'),
-        ('supper', 'ужин'))
+TAGS = (('breakfast', 'Завтрак'),
+        ('dinner', 'Обед'),
+        ('supper', 'Ужин'))
 
 
 class Ingredient(models.Model):
