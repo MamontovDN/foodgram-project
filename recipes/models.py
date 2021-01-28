@@ -12,6 +12,7 @@ class Ingredient(models.Model):
     title = models.CharField(max_length=100, verbose_name='название')
     dimension = models.CharField(max_length=50,
                                  verbose_name='единица измерения',
+                                 default='г.',
                                  blank=True, null=True)
 
     class Meta:
@@ -26,7 +27,7 @@ class Recipe(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE,
                                related_name='recipes')
     title = models.CharField(max_length=100)
-    ingredients = models.ManyToManyField(Ingredient, through='IngredientItem')
+    ingredients = models.ManyToManyField('IngredientItem')
     img = models.ImageField(upload_to='recipes/', blank=True, null=True)
     description = models.TextField()
     tags = MultiSelectField(max_choices=3, choices=TAGS)
@@ -44,7 +45,6 @@ class Recipe(models.Model):
 
 class IngredientItem(models.Model):
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
-    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     count = models.IntegerField(verbose_name='кол-во')
 
     def __str__(self):

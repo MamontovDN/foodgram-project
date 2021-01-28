@@ -8,6 +8,7 @@ __pycache__/
 
 # Distribution / packaging
 .idea
+media/
 .DS_Store
 .Python
 build/

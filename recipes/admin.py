@@ -4,6 +4,7 @@ from .models import Recipe, Ingredient
 
 
 class RecipeAdmin(admin.ModelAdmin):
+    filter_vertical = ('ingredients',)
     list_display = ("pk", "title", "author",)
     search_fields = ("title",)
     list_filter = ("pub_date",)
