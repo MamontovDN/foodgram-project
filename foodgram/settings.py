@@ -34,6 +34,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'multiselectfield',
     'rest_framework',
+    'sorl.thumbnail',
 ]
 
 MIDDLEWARE = [

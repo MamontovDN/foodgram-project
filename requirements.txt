@@ -4,3 +4,4 @@ django-multiselectfield==0.1.12
 django-registration-redux==2.9
 Pillow==8.1.0
 python-dotenv==0.15.0
+sorl-thumbnail==12.7.0

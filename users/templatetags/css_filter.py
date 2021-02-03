@@ -8,3 +8,17 @@ def addclass(field, css):
     return field.as_widget(attrs={"class": css})
 
 
+@register.filter
+def add_param(tags, val):
+    param = list(tags)
+    if val not in tags:
+        param.append(val)
+    return ','.join(param)
+
+
+@register.filter
+def del_param(tags, val):
+    param = list(tags)
+    if val in tags:
+        param.remove(val)
+    return ','.join(param)
