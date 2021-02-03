@@ -22,3 +22,8 @@ def del_param(tags, val):
     if val in tags:
         param.remove(val)
     return ','.join(param)
+
+
+@register.filter
+def get_param(tags):
+    return ','.join(tags)

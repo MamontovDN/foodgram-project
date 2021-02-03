@@ -1,24 +1,35 @@
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import render, redirect
-from django.views.generic import CreateView, FormView
 
 from .forms import RecipeForm
 from .models import Ingredient, IngredientItem, Recipe
 
 
 def index(request):
-    tags = request.GET.get('tags')
-    if not tags:
-        tags = ['breakfast', 'dinner', 'supper']
-    else:
-        tags = tags.split(',')
+    # получаем информацию по выбраным тегам
+    tags = request.GET.get('tags', 'breakfast,dinner,supper')
+    print(tags)
+    tags = tags.split(',')
+    # случай когда не выбран ни один тег
+    if tags == ['']:
+        tags = ['None']
+    # генерируем фильтр по тегам
     tag_filter = Q(tags__contains=tags[0])
     for tag in tags[1:]:
         tag_filter |= Q(tags__contains=tag)
+    # получаем записи
     recipes = (Recipe.objects.filter(tag_filter).
                prefetch_related('ingredients').order_by('-pub_date'))
-    context = {'recipes': recipes, 'tags': tags}
+    # настраиваем paginator
+    paginator = Paginator(recipes, 3)
+    page_number = request.GET.get('page', 1)
+    page = paginator.get_page(page_number)
+    print(page.has_other_pages())
+    # задаем контекст
+    context = {'recipes': recipes, 'tags': tags, 'page': page,
+               'paginator': paginator, 'url_name': 'index'}
     return render(request, 'index.html', context)
 
 

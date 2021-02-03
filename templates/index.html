@@ -48,21 +48,13 @@
         </ul>
     </div>
     <div class="card-list">
-        {% for recipe in recipes %}
+        {% for recipe in page %}
             {% include 'includes/recipe_card.html' %}
         {% endfor %}
     </div>
-    <nav class="pagination" aria-label="Search results pages">
-        <ul class="pagination__container">
-            <li class="pagination__item"><a class="pagination__link link" href="#"><span class="icon-left"></span></a></li>
-            <li class="pagination__item pagination__item_active"><a class="pagination__link link" href="#">1</a></li>
-            <li class="pagination__item"><a class="pagination__link link" href="#">2</a></li>
-            <li class="pagination__item"><a class="pagination__link link" href="#">3</a></li>
-            <li class="pagination__item"><a class="pagination__link link" href="#">4</a></li>
-            <li class="pagination__item"><a class="pagination__link link" href="#">5</a></li>
-            <li class="pagination__item"><a class="pagination__link link" href="#"><span class="icon-right"></span></a></li>
-        </ul>
-    </nav>
+    {% if page.has_other_pages %}
+        {% include 'includes/paginator.html' with items=page paginator=paginator%}
+    {% endif %}
 </main>
 <script src="{% static 'js/js/components/MainCards.js' %}"></script>
 {% if user.is_authenticated %}
