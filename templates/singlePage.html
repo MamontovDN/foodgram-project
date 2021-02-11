@@ -66,6 +66,9 @@
                             </li>
                         {% endif %}
                     </ul>
+                    <p class="single-card__text">
+                        В избранном {{ favorite_count }} раз.
+                    </p>
                 </div>
                 <ul class="single-card__items">
                     <li class="single-card__item">
@@ -105,7 +108,9 @@
                 </div>
                 <div class="single-card__section">
                     <h3 class="single-card__section-title">Описание:</h3>
-                    <p class=" single-card__section-text">{{ recipe.description}}</p>
+                    {% for text in recipe.description|split %}
+                        <p class=" single-card__section-text">{{ text}}</p>
+                    {% endfor %}
                 </div>
             </div>
         </div>

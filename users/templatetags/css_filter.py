@@ -52,3 +52,9 @@ def subscribes(auth_id, username):
 def purchase(rec_id, username):
     user = get_object_or_404(User, username=username)
     return user.shop_list.filter(recipe=rec_id).exists()
+
+
+@register.filter
+def split(string):
+    strings = string.split('\n')
+    return strings

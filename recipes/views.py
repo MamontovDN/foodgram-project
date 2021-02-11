@@ -10,8 +10,8 @@ from reportlab.pdfgen import canvas
 
 from users.models import User
 from .forms import RecipeForm
-from .help_functions import get_tag_filter
-from .models import Ingredient, IngredientItem, Recipe
+from .help_functions import get_tag_filter, get_ing_list
+from .models import Recipe
 
 
 def index(request):
@@ -32,75 +32,64 @@ def index(request):
 
 def recipe_page(request, recipe_id):
     recipe = get_object_or_404(Recipe, id=recipe_id)
-    ingredients = recipe.ingredients.all()
-    return render(request, 'singlePage.html', {'recipe': recipe,
-                                               'ingredients': ingredients,
-                                               'url_name': 'recipe_page'})
+    ingredients = recipe.ingredients.select_related('ingredient')
+    favorite_count = recipe.fans.count()
+    context = {'recipe': recipe, 'ingredients': ingredients,
+               'url_name': 'recipe_page', 'favorite_count': favorite_count}
+    return render(request, 'singlePage.html', context)
 
 
 @login_required
-def new_recipe(request):
-    form = RecipeForm(request.POST or None,
-                      files=request.FILES or None)
-    context = {'form': form, 'url_name': 'new_recipe',
-               'title': 'Создание рецепта'}
-    if request.method == 'POST':
-        if form.is_valid():
-            name_ing_list = request.POST.getlist('nameIngredient')
-            if not name_ing_list:
-                return render(request, 'formRecipe.html', context)
-            count_ing_list = request.POST.getlist('valueIngredient')
-            dimension_ing_list = request.POST.getlist('unitsIngredient')
-            recipe = form.save(commit=False)
-            recipe.author = request.user
-            recipe.save()
-            pk = recipe.pk
-            recipe = Recipe.objects.get(pk=pk)
-            for name, count, dimension in zip(name_ing_list, count_ing_list,
-                                              dimension_ing_list):
-                name = name.replace("'", '"')
-                obj = Ingredient.objects.get(title=name)
-                item, flag = IngredientItem.objects.get_or_create(
-                    ingredient=obj,
-                    count=count)
-                recipe.ingredients.add(item)
+def new_recipe(request, **kwargs):
+    # Задаем стандартные пустые значения если это создание рецепта
+    article = None
+    tags = []
+    ing_list = []
+    title = 'Создание рецепта'
+    url_name = 'new_recipe'
+    recipe_id = kwargs.get('recipe_id')
+    # обрабатываем случай если это редактирование рецепта
+    if recipe_id:
+        article = get_object_or_404(Recipe, id=recipe_id)
+        if article.author != request.user:
             return redirect('index')
-        return render(request, 'formRecipe.html', context)
-    return render(request, 'formRecipe.html', context)
-
-
-@login_required
-def recipe_edit(request, recipe_id):
-    article = get_object_or_404(Recipe, id=recipe_id)
-    if article.author != request.user:
-        return redirect('index')
+        ing_list = article.ingredients.select_related('ingredient')
+        tags = article.tags
+        title = 'Редактирование рецепта'
+        url_name = 'recipe_edit'
+    # создаем форму и контекст
     form = RecipeForm(request.POST or None,
                       files=request.FILES or None,
                       instance=article)
-    ing_list = article.ingredients.select_related('ingredient')
-    tags = article.tags
-    context = {'form': form, 'url_name': 'recipe_edit',
-               'title': 'Редактирование рецепта', 'ing_list': ing_list,
-               'tags': tags, 'recipe_id': recipe_id}
+    context = {'form': form, 'url_name': url_name,
+               'title': title, 'tags': tags,
+               'ing_list': ing_list, 'ing_error': False,
+               'recipe_id': recipe_id
+               }
     if request.method == 'POST':
+        # получаем введенные ингредиетны
+        name_ing_list = request.POST.getlist('nameIngredient')
+        # если их нет возвращаемся к созданию формы с ошибкой
+        if not name_ing_list:
+            context['ing_error'] = True
+            return render(request, 'formRecipe.html', context)
+        # получаем кол-во ингредиентов
+        count_ing_list = request.POST.getlist('valueIngredient')
+        # создаем список объектов IngredientItem для добавления в рецепт
+        # либо отправки их в форму в при ошибке валидности
+        ing_list = get_ing_list(name_ing_list, count_ing_list)
+        context['ing_list'] = ing_list
         if form.is_valid():
-            name_ing_list = request.POST.getlist('nameIngredient')
-            if not name_ing_list:
-                return render(request, 'recipeEditForm.html', context)
-            count_ing_list = request.POST.getlist('valueIngredient')
-            dimension_ing_list = request.POST.getlist('unitsIngredient')
-            form.save()
-            article.ingredients.clear()
-            for name, count, dimension in zip(name_ing_list, count_ing_list,
-                                              dimension_ing_list):
-                obj = Ingredient.objects.get(title=name)
-                item, flag = IngredientItem.objects.get_or_create(
-                    ingredient=obj,
-                    count=count.replace(',', '.'))
-                article.ingredients.add(item)
-            return redirect('recipe_page', recipe_id)
-        return render(request, 'recipeEditForm.html', context)
-    return render(request, 'recipeEditForm.html', context)
+            recipe = form.save(commit=False)
+            recipe.author = request.user
+            recipe.save()
+            recipe.ingredients.clear()
+            # добавляем список ингредиентов в рецепт
+            for item in ing_list:
+                recipe.ingredients.add(item)
+            return redirect('recipe_page', recipe.id)
+        return render(request, 'formRecipe.html', context)
+    return render(request, 'formRecipe.html', context)
 
 
 @login_required
@@ -115,13 +104,15 @@ def recipe_delete(request, recipe_id):
 @login_required
 def favorites(request):
     user = get_object_or_404(User, username=request.user)
+    # создаем фильтр для тегов
     custom_filter, tags = get_tag_filter(request)
+    # добавляем фильтр для выбора только избранных для юзера рецептов
     custom_filter &= Q(fans__user=user)
     # получаем записи
     recipes = (Recipe.objects.filter(custom_filter).
                prefetch_related('ingredients').order_by('-pub_date'))
     # настраиваем paginator
-    paginator = Paginator(recipes, 3)
+    paginator = Paginator(recipes, 6)
     page_number = request.GET.get('page', 1)
     page = paginator.get_page(page_number)
     # задаем контекст
@@ -133,11 +124,12 @@ def favorites(request):
 
 def profile(request, author_id):
     author = get_object_or_404(User, id=author_id)
+    # создаем фильтр для тегов
     custom_filter, tags = get_tag_filter(request)
     recipes = (author.recipes.filter(custom_filter).
                order_by('-pub_date'))
     # настраиваем paginator
-    paginator = Paginator(recipes, 3)
+    paginator = Paginator(recipes, 6)
     page_number = request.GET.get('page', 1)
     page = paginator.get_page(page_number)
     # задаем контекст
@@ -152,7 +144,7 @@ def subscribes_view(request):
     user = get_object_or_404(User, username=request.user)
     cards = (user.subscribes.prefetch_related('author__recipes').
              order_by('author__first_name'))
-    paginator = Paginator(cards, 3)
+    paginator = Paginator(cards, 6)
     page_number = request.GET.get('page', 1)
     page = paginator.get_page(page_number)
     context = {'page': page, 'tags': [],
@@ -175,6 +167,7 @@ def generate_pdf_view(request):
     user = get_object_or_404(User, username=request.user)
     ing_dict = {}
     shop_list = user.shop_list.select_related('recipe')
+    # генерируем словарь с ингредиентами
     for el in shop_list:
         ingredients = el.recipe.ingredients.select_related('ingredient')
         for ingredient in ingredients:
@@ -185,6 +178,7 @@ def generate_pdf_view(request):
                 ing_dict[name] = [count, dimension]
             else:
                 ing_dict[name][0] += count
+    # настройка pdf файла и ответа на выгрузку файла
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="shopList.pdf"'
     p = canvas.Canvas(response, pagesize=A4)
@@ -193,6 +187,7 @@ def generate_pdf_view(request):
     x = 50
     y = 750
     for num, el in enumerate(ing_dict):
+        # если закончилось место на странице создаем новую страницу
         if y <= 100:
             y = 700
             p.showPage()

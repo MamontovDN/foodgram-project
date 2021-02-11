@@ -18,7 +18,7 @@ class Api {
       })
   }
   addPurchases (id) {
-    return fetch(`/api/purchases`, {
+    return fetch(`/api/purchases/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -72,7 +72,8 @@ class Api {
     return fetch(`/api/subscriptions/${id}/`, {
       method: 'DELETE',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'X-CSRFToken': token
       }
     })
       .then( e => {
@@ -119,7 +120,8 @@ class Api {
     getIngredients  (text)  {
         return fetch(`/api/ingredients/?search=${text}`, {
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'X-CSRFToken': token
             }
         })
             .then( e => {

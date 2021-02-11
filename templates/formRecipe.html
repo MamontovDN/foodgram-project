@@ -23,7 +23,6 @@
             <div class="form__group">
                 <label for="id_name" class="form__label">Название рецепта</label>
                 <div class="form__field-group">
-                    <!--<input type="text" id="id_name" name="name" class="form__input">-->
                     {{ form.title|addclass:'form__input' }}
                     {% for error in form.title.errors %}
                         <span class="form__error">error</span>
@@ -35,15 +34,31 @@
                 <div class="form__field-group">
                     <div class="tags">
                         <div class="tags__item">
-                            <input type="checkbox" name="{{ form.tags.name }}" id="{{ form.tags.0.id_for_label }}" value="{{form.tags.field.choices.0.0}}" class="tags__checkbox tags__checkbox_style_orange">
+                            <input type="checkbox" name="{{ form.tags.name }}"
+                                   id="{{ form.tags.0.id_for_label }}"
+                                   value="{{form.tags.field.choices.0.0}}"
+                                   class="tags__checkbox tags__checkbox_style_orange"
+                                   {% if 'breakfast' in tags %} checked {% endif %}
+                            >
                             <label for="{{ form.tags.0.id_for_label }}" class="tags__label">Завтрак</label>
                         </div>
                         <div class="tags__item">
-                            <input type="checkbox" name="{{ form.tags.name }}" id="{{ form.tags.1.id_for_label }}" value="{{form.tags.field.choices.1.0}}" class="tags__checkbox tags__checkbox_style_green">
+                            <input type="checkbox" name="{{ form.tags.name }}"
+                                   id="{{ form.tags.1.id_for_label }}"
+                                   value="{{form.tags.field.choices.1.0}}"
+                                   class="tags__checkbox tags__checkbox_style_green"
+                                   {% if 'dinner' in tags %} checked {% endif %}
+                            >
                             <label for="{{ form.tags.1.id_for_label }}" class="tags__label">Обед</label>
                         </div>
                         <div class="tags__item">
-                            <input type="checkbox" name="{{ form.tags.name }}" id="{{ form.tags.2.id_for_label }}" value="{{form.tags.field.choices.2.0}}" class="tags__checkbox tags__checkbox_style_purple">
+                            <input type="checkbox"
+                                   name="{{ form.tags.name }}"
+                                   id="{{ form.tags.2.id_for_label }}"
+                                   value="{{form.tags.field.choices.2.0}}"
+                                   class="tags__checkbox tags__checkbox_style_purple"
+                                   {% if 'supper' in tags %} checked {% endif %}
+                            >
                             <label for="{{ form.tags.2.id_for_label }}" class="tags__label">Ужин</label>
                         </div>
                     </div>
@@ -75,23 +90,28 @@
                         {% endfor %}
                     </div>
                     <span class="form__ingredient-link" id="addIng">Добавить ингредиент</span>
-                    <span class="form__error"></span>
+                    {% if ing_error %}
+                        <span class="form__error">Добавьте ингредиенты</span>
+                    {% endif %}
                 </div>
             </div>
             <div class="form__group">
                 <label for="{{ form.duration.id_for_label }}" class="form__label">Время приготовления</label>
                 <div class="form__field-group form__field-group_time">
-{#                    <input type="text" id="id_time" name="name" class="form__input">#}
                     {{ form.duration|addclass:'form__input' }}
                     <label for="{{ form.duration.id_for_label }}" class="form__label">минут</label>
-                    <span class="form__error"></span>
+                    {% if form.duration.errors %}
+                        <span class="form__error">Обязательное поле</span>
+                    {% endif %}
                 </div>
             </div>
             <div class="form__group">
                 <label for="id_description" class="form__label">Описание</label>
                 <div class="form__field-group">
-                    <textarea name="description" id="id_description" rows="8" class="form__textarea"></textarea>
-                    <span class="form__error"></span>
+                    {{ form.description|addclass:"form__textarea" }}
+                    {% if form.description.errors %}
+                        <span class="form__error">Обязательное поле</span>
+                    {% endif %}
                 </div>
             </div>
             <div class="form__group">
@@ -101,7 +121,16 @@
                 </div>
             </div>
             <div class="form__footer">
-                <button class="button button_style_blue">Создать рецепт</button>
+                {% if url_name == 'new_recipe' %}
+                    <button class="button button_style_blue">Создать рецепт</button>
+                {% else %}
+                    <button class="button button_style_blue">Сохранить</button>
+                    <a style="margin-left: 2.5em"
+                       href="{% url 'recipe_delete' recipe_id %}"
+                       class="form__ingredient-link">
+                        Удалить
+                    </a>
+                {% endif %}
             </div>
         </form>
     </div>
