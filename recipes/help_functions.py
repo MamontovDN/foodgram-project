@@ -20,8 +20,6 @@ def get_tag_filter(request):
 def get_ing_list(name_list, count_list):
     ing_list = []
     for name, count in zip(name_list, count_list,):
-        # обрабатываем случай если в названии ингредиента есть кавычки
-        # которые в formRecipe.js были заменены на апострофы
         obj = Ingredient.objects.get(title=name)
         # изменяем десятичный разделитель
         count = count.replace(',', '.')
