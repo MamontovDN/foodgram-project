@@ -3,6 +3,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q
 from django.http import HttpResponse
 from django.shortcuts import render, redirect, get_object_or_404
+from django.views.generic.base import TemplateView
 from reportlab.lib.pagesizes import A4
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
@@ -207,3 +208,11 @@ def page_not_found(request, exception):
         {"path": request.path},
         status=404
     )
+
+
+class Tech(TemplateView):
+    template_name = 'static_templates/technologies.html'
+
+
+class About(TemplateView):
+    template_name = 'static_templates/about_me.html'

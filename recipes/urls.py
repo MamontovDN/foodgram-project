@@ -13,6 +13,8 @@ urlpatterns = [
     path('profile/<int:author_id>/', views.profile, name='profile'),
     path('favorites/', views.favorites, name='favorites'),
     path('recipe/<int:recipe_id>/', views.recipe_page, name='recipe_page'),
+    path('spec/', views.Tech.as_view(), name='spec'),
+    path('about-me/', views.About.as_view(), name='about-me'),
     path('', views.index, name='index'),
 
 ]
