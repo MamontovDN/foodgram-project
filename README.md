@@ -1,7 +1,7 @@
 # foodgram-project
 ![foodgram-project](https://github.com/mamontovdn/foodgram-project/workflows/foodgram-project/badge.svg)
 ### Адрес сайта
-http://84.252.128.180
+http://www.mamontovdn.ru
 ## Описание
 Сайт является - базой кулинарных рецептов.
 Пользователи могут создовать свои рецепты, читать рецепты других пользователей, 
