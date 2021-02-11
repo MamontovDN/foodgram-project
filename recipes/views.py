@@ -198,3 +198,12 @@ def generate_pdf_view(request):
     p.showPage()
     p.save()
     return response
+
+
+def page_not_found(request, exception):
+    return render(
+        request,
+        "misc/404.html",
+        {"path": request.path},
+        status=404
+    )
