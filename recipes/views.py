@@ -1,3 +1,5 @@
+import reportlab
+from django.conf import settings
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.db.models import Q
@@ -165,6 +167,8 @@ def shop_list_view(request):
 
 @login_required
 def generate_pdf_view(request):
+    reportlab.rl_config.TTFSearchPath.append(
+        str(settings.BASE_DIR) + '/Library/Fonts/')
     user = get_object_or_404(User, username=request.user)
     ing_dict = {}
     shop_list = user.shop_list.select_related('recipe')
@@ -183,7 +187,7 @@ def generate_pdf_view(request):
     response = HttpResponse(content_type='application/pdf')
     response['Content-Disposition'] = 'attachment; filename="shopList.pdf"'
     p = canvas.Canvas(response, pagesize=A4)
-    pdfmetrics.registerFont(TTFont('Arial', 'Arial.ttf'))
+    pdfmetrics.registerFont(TTFont('Arial', 'arial.ttf'))
     p.setFont('Arial', 20)
     x = 50
     y = 750

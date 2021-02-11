@@ -17,7 +17,7 @@ def get_tag_filter(request):
     return tag_filter, tags
 
 
-def get_ing_list(name_list, count_list):
+def пшеget_ing_list(name_list, count_list):
     ing_list = []
     for name, count in zip(name_list, count_list,):
         # обрабатываем случай если в названии ингредиента есть кавычки
