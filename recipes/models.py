@@ -48,7 +48,7 @@ class Recipe(models.Model):
 # Модель Ингредиента с кол-вом для модели Рецепта
 class IngredientItem(models.Model):
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
-    count = models.DecimalField(verbose_name='кол-во', max_digits=6, 
+    count = models.DecimalField(verbose_name='кол-во', max_digits=6,
                                 decimal_places=1)
 
     class Meta:

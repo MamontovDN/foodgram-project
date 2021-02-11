@@ -1,5 +1,11 @@
 from rest_framework import serializers
-from recipes.models import Ingredient, Favorites, Recipe, Subscribe, ShopListItem
+from recipes.models import (
+    Ingredient,
+    Favorites,
+    Recipe,
+    Subscribe,
+    ShopListItem
+)
 from users.models import User
 
 
