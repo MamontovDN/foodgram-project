@@ -1,4 +1,4 @@
-# yamdb_final
+# foodgram-project
 ![foodgram-project](https://github.com/mamontovdn/foodgram-project/workflows/foodgram-project/badge.svg)
 ### Адрес сайта
 http://84.252.128.180
