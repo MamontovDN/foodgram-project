@@ -61,6 +61,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'foodgram.context_processor.shop_list_count',
             ],
         },
     },
@@ -124,7 +125,7 @@ EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = 'spartan1994.94@gmail.com'
-EMAIL_HOST_PASSWORD = 'mamontov'
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
 # === registration setting ===
 ACCOUNT_ACTIVATION_DAYS = 7

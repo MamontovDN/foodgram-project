@@ -10,6 +10,7 @@
     {% endblock %}
 </head>
 <body class="body">
+{% csrf_token %}
 {% include 'includes/nav.html' %}
 {% block content %}
 <!-- content -->

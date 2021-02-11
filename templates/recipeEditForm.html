@@ -17,9 +17,9 @@
         <h1 class="main__title">{{ title }}</h1>
     </div>
     <div class="form-container">
-
         <form class="form" method="post" enctype="multipart/form-data">
             {% csrf_token %}
+        {{ form.errors }}
             <div class="form__group">
                 <label for="id_name" class="form__label">Название рецепта</label>
                 <div class="form__field-group">
@@ -35,15 +35,31 @@
                 <div class="form__field-group">
                     <div class="tags">
                         <div class="tags__item">
-                            <input type="checkbox" name="{{ form.tags.name }}" id="{{ form.tags.0.id_for_label }}" value="{{form.tags.field.choices.0.0}}" class="tags__checkbox tags__checkbox_style_orange">
+                            <input type="checkbox" name="{{ form.tags.name }}"
+                                   id="{{ form.tags.0.id_for_label }}"
+                                   value="{{form.tags.field.choices.0.0}}"
+                                   class="tags__checkbox tags__checkbox_style_orange"
+                                   {% if 'breakfast' in tags %} checked {% endif %}
+                            >
                             <label for="{{ form.tags.0.id_for_label }}" class="tags__label">Завтрак</label>
                         </div>
                         <div class="tags__item">
-                            <input type="checkbox" name="{{ form.tags.name }}" id="{{ form.tags.1.id_for_label }}" value="{{form.tags.field.choices.1.0}}" class="tags__checkbox tags__checkbox_style_green">
+                            <input type="checkbox" name="{{ form.tags.name }}"
+                                   id="{{ form.tags.1.id_for_label }}"
+                                   value="{{form.tags.field.choices.1.0}}"
+                                   class="tags__checkbox tags__checkbox_style_green"
+                                   {% if 'dinner' in tags %} checked {% endif %}
+                            >
                             <label for="{{ form.tags.1.id_for_label }}" class="tags__label">Обед</label>
                         </div>
                         <div class="tags__item">
-                            <input type="checkbox" name="{{ form.tags.name }}" id="{{ form.tags.2.id_for_label }}" value="{{form.tags.field.choices.2.0}}" class="tags__checkbox tags__checkbox_style_purple">
+                            <input type="checkbox"
+                                   name="{{ form.tags.name }}"
+                                   id="{{ form.tags.2.id_for_label }}"
+                                   value="{{form.tags.field.choices.2.0}}"
+                                   class="tags__checkbox tags__checkbox_style_purple"
+                                   {% if 'supper' in tags %} checked {% endif %}
+                            >
                             <label for="{{ form.tags.2.id_for_label }}" class="tags__label">Ужин</label>
                         </div>
                     </div>
@@ -90,18 +106,25 @@
             <div class="form__group">
                 <label for="id_description" class="form__label">Описание</label>
                 <div class="form__field-group">
-                    <textarea name="description" id="id_description" rows="8" class="form__textarea"></textarea>
+                    <!--<textarea name="description" id="id_description" rows="8" class="form__textarea"></textarea>-->
+                    {{ form.description|addclass:"form__textarea" }}
                     <span class="form__error"></span>
                 </div>
             </div>
             <div class="form__group">
                 <span class="form__label">Загрузить фото</span>
                 <div class="form__field-group">
-                    {{form.img}}
+                    {{ form.img}}
+                    <span class="form__error"></span>
                 </div>
             </div>
             <div class="form__footer">
-                <button class="button button_style_blue">Создать рецепт</button>
+                <button class="button button_style_blue">Сохранить</button>
+                <a style="margin-left: 2.5em"
+                   href="{% url 'recipe_delete' recipe_id %}"
+                   class="form__ingredient-link">
+                    Удалить
+                </a>
             </div>
         </form>
     </div>

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block meta %}
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+{% endblock %}
+{% block title %}{{ title}}{% endblock %}
+{% block links %}
+    <link rel="stylesheet" href="{% static 'css/pages/shopList.css' %}">
+{% endblock %}
+{% block content %}
+<main class="main container">
+    <div class="main__header">
+        <h1 class="main__title">{{ title }}</h1>
+    </div>
+    <div class="card-list card-list_column">
+        <ul class="shopping-list">
+            {% for el in shoplist%}
+                <li class="shopping-list__item" data-id="{{ el.recipe.id }}">
+                    <div class="recipe recipe_reverse">
+                        {% load thumbnail %}
+                        {% thumbnail el.recipe.img "500x500" crop="center" upscale=True as im %}
+                            <img class="recipe__image recipe__image_big" src="{{ im.url }}" alt="Какой-то текст"/>
+                        {% endthumbnail %}
+                        <h3 class="recipe__title">{{ el.recipe.title }}</h3>
+                        <p class="recipe__text"><span class="icon-time"></span>{{ el.recipe.duration }}</p>
+                    </div>
+                    <a href="#" class="shopping-list__button link">Удалить</a>
+                </li>
+            {% endfor %}
+        </ul>
+        <a target="blank" href="{% url 'generate_pdf' %}"><button class="button button_style_blue">Скачать список</button></a>
+    </div>
+</main>
+<script src="{% static 'js/js/config/config.js' %}"></script>
+<script src="{% static 'js/js/components/Header.js' %}"></script>
+<script src="{% static 'js/js/components/ShopList.js' %}"></script>
+<script src="{% static 'js/js/api/Api.js' %}"></script>
+<script src="{% static 'js/shopList.js' %}"></script>
+{% endblock %}

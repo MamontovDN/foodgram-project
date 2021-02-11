@@ -1,0 +1,130 @@
+{% extends "base.html" %}
+{% load css_filter %}
+{% block meta %}
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+{% endblock %}
+{% block title %}{{ recipe.title }}{% endblock %}
+{% load static %}
+{% block links %}
+    <link rel="stylesheet" href="{% static 'css/pages/single.css' %}">
+{% endblock %}
+{% block content %}
+    <main class="main container">
+        <div class="single-card" data-id="{{ recipe.id }}" data-author="{{ recipe.author.id }}">
+            {% load thumbnail %}
+            {% thumbnail recipe.img "1000x1000" crop="center" upscale=True as im %}
+                <img class="single-card__image" src="{{ im.url }}" alt="Какой-то текст"/>
+            {% endthumbnail %}
+            <div class="single-card__info">
+                <div class="single-card__header-info">
+                    <h1 class="single-card__title">{{ recipe.title }}</h1>
+                    {% if user.is_authenticated %}
+                        <div class="single-card__favorite">
+                            {% if recipe.id|favorites:request.user %}
+                                <button class="button button_style_none" name="favorites">
+                                    <span class="icon-favorite icon-favorite_active"></span>
+                                </button>
+                            {% else %}
+                                <button class="button button_style_none" name="favorites" data-out>
+                                    <span class="icon-favorite"></span>
+                                </button>
+                            {% endif %}
+                        </div>
+                    {% endif %}
+                </div>
+                <ul class="single-card__items">
+                    {% if 'breakfast' in recipe.tags%}
+                        <li class="single-card__item"><span class="badge badge_style_orange">Завтрак</span></li>
+                    {% endif %}
+                    {% if 'dinner' in recipe.tags%}
+                        <li class="single-card__item"><span class="badge badge_style_green">Обед</span></li>
+                    {% endif %}
+                    {% if 'supper' in recipe.tags%}
+                        <li class="single-card__item"><span class="badge badge_style_purple">Ужин</span></li>
+                    {% endif %}
+                </ul>
+                <div class="single-card__items single-card__items_column">
+                    <p class="single-card__text">
+                        <span class="icon-time"></span>
+                        {{ recipe.duration}} минут
+                    </p>
+                    <ul class="single-card__items">
+                        <li class="single-card__item">
+                            <p class="single-card__text">
+                                <span class="icon-user"></span>
+                                <a href="#"  class="single-card__text">
+                                    {{ recipe.author.get_full_name}}
+                                </a>
+                            </p>
+                        </li>
+                        {% if request.user == recipe.author %}
+                            <li class="single-card__item">
+                                <a style="margin-left: 2.5em" href="{% url 'recipe_edit' recipe.id %}" class="single-card__text">Редактировать рецепт</a>
+                            </li>
+                        {% endif %}
+                    </ul>
+                </div>
+                <ul class="single-card__items">
+                    <li class="single-card__item">
+                        {% if recipe.id|purchase:request.user %}
+                            <button class="button button_style_light-blue-outline" name="purchases">
+                                <span class="icon-check button__icon"></span>
+                                Рецепт добавлен
+                            </button>
+                        {% else %}
+                            <button class="button button_style_light-blue" name="purchases" data-out>
+                                <span class="icon-plus button__icon"></span>
+                                Добавить в покупки
+                            </button>
+                        {% endif %}
+                    </li>
+                    <li class="single-card__item">
+                        {% if not recipe.author.id|subscribes:user %}
+                            <button class="button button_style_light-blue button_size_subscribe" name="subscribe" data-out>
+                                Подписаться на автора
+                            </button>
+                        {% else %}
+                            <button class="button button_style_light-blue button_size_subscribe button_style_blue" name="subscribe">
+                                Отписаться от автора
+                            </button>
+                        {% endif %}
+                    </li>
+                </ul>
+                <div class="single-card__section">
+                    <h3 class="single-card__section-title">Ингридиенты:</h3>
+                    <div class="single-card__items single-card__items_column">
+                        {% for item in ingredients %}
+                            <p class=" single-card__section-item">
+                                {{ item.ingredient.title }} - {{ item.count }} {{ item.ingredient.dimension }}
+                            </p>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="single-card__section">
+                    <h3 class="single-card__section-title">Описание:</h3>
+                    <p class=" single-card__section-text">{{ recipe.description}}</p>
+                </div>
+            </div>
+        </div>
+    </main>
+    {% if request.user.is_authenticated %}
+        <script src="{% static 'js/js/components/Purchases.js' %}"></script>
+        <script src="{% static 'js/js/components/Favorites.js' %}"></script>
+        <script src="{% static 'js/js/components/Subscribe.js' %}"></script>
+    {% endif %}
+    <script src="{% static 'js/js/config/config.js' %}"></script>
+
+    <script src="{% static 'js/js/components/MainCards.js' %}"></script>
+    <script src="{% static 'js/js/components/SingleCard.js' %}"></script>
+    <script src="{% static 'js/js/components/Header.js' %}"></script>
+
+    <script src="{% static 'js/js/api/API.js' %}"></script>
+    {% if request.user.is_authenticated %}
+        <script src="{% static 'js/singlePage.js' %}"></script>
+    {% else %}
+        <script src="{% static 'js/singlePageNotAuth.js' %}"></script>
+    {% endif %}
+{% endblock %}
