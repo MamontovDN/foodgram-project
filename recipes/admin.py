@@ -12,7 +12,7 @@ from .models import (
 
 class RecipeAdmin(admin.ModelAdmin):
     filter_vertical = ("ingredients",)
-    list_display = ("pk", "title", "author")
+    list_display = ("pk", "title", "author", "tags")
     search_fields = ("title",)
     list_filter = ("author", "title", "tags")
     empty_value_display = "-пусто-"
