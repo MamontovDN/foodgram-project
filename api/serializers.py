@@ -4,8 +4,9 @@ from recipes.models import (
     Favorites,
     Recipe,
     Subscribe,
-    ShopListItem
+    ShopListItem,
 )
+
 from users.models import User
 
 

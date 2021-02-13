@@ -145,3 +145,6 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
     ],
 }
+
+# === for pagination ===
+OBJ_ON_PAGE = 6

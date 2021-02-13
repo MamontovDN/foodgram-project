@@ -55,7 +55,7 @@
                         <li class="single-card__item">
                             <p class="single-card__text">
                                 <span class="icon-user"></span>
-                                <a href="#"  class="single-card__text">
+                                <a href="{% url 'profile' recipe.author.id %}"  class="single-card__text">
                                     {{ recipe.author.get_full_name}}
                                 </a>
                             </p>
@@ -129,8 +129,7 @@
     <script src="{% static 'js/js/components/MainCards.js' %}"></script>
     <script src="{% static 'js/js/components/SingleCard.js' %}"></script>
     <script src="{% static 'js/js/components/Header.js' %}"></script>
-
-    <script src="{% static 'js/js/api/API.js' %}"></script>
+    <script src="{% static 'js/js/api/Api.js' %}"></script>
     {% if request.user.is_authenticated %}
         <script src="{% static 'js/singlePage.js' %}"></script>
     {% else %}

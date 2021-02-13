@@ -13,8 +13,12 @@ from .serializers import (
 from recipes.models import Ingredient, Favorites, Subscribe, ShopListItem
 
 
-# класс родитель с переопределенным мнтодом DELETE для Subscribe, Favorite и
-# Purchase
+"""
+класс родитель с переопределенным мнтодом DELETE для Subscribe, Favorite и
+Purchase
+"""
+
+
 class Mix(generics.CreateAPIView, generics.DestroyAPIView):
     api_name = ""
 
@@ -27,8 +31,8 @@ class Mix(generics.CreateAPIView, generics.DestroyAPIView):
         else:
             obj = user.shop_list.filter(recipe__id=kwargs["id"])
         if obj.delete():
-            return Response({"Success": "True"})
-        return Response({"Success": "False"})
+            return Response({"Success": True})
+        return Response({"Success": False})
 
 
 class IngredientViewSet(generics.ListAPIView):
