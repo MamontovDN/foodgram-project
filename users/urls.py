@@ -2,10 +2,13 @@ from django.urls import path, include, reverse_lazy
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
-    path('password/reset/',
-         auth_views.PasswordResetView.as_view(
-             success_url=reverse_lazy('auth_password_reset_done'),
-             html_email_template_name='registration/password_reset_email.html'),
-         name='auth_password_reset'),
-    path('', include('registration.backends.default.urls')),
+    path(
+        "password/reset/",
+        auth_views.PasswordResetView.as_view(
+            success_url=reverse_lazy("auth_password_reset_done"),
+            html_email_template_name="registration/password_reset_email.html",
+        ),
+        name="auth_password_reset",
+    ),
+    path("", include("registration.backends.default.urls")),
 ]
