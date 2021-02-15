@@ -10,11 +10,16 @@ from .models import (
 )
 
 
+class IngredientItemInline(admin.TabularInline):
+    model = IngredientItem
+
+
 class RecipeAdmin(admin.ModelAdmin):
-    filter_vertical = ("ingredients",)
+    # filter_vertical = ("ingredients",)
+    inlines = (IngredientItemInline,)
     list_display = ("pk", "title", "author", "tags")
     search_fields = ("title",)
-    list_filter = ("author", "title", "tags")
+    list_filter = ("author", "title", "tags",)
     empty_value_display = "-пусто-"
 
 

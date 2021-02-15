@@ -1,9 +1,10 @@
+from django.core.validators import MinValueValidator
 from django.db import models
 
 from users.models import User
 from multiselectfield import MultiSelectField
 
-TAGS = (("breakfast", "breakfast"), ("dinner", "dinner"), ("supper", "supper"))
+TAGS = (("breakfast", "Завтрак"), ("dinner", "Обед"), ("supper", "Ужин"))
 
 
 # модель Ингредиента
@@ -38,7 +39,10 @@ class Recipe(models.Model):
     pub_date = models.DateTimeField(
         auto_now_add=True, verbose_name="дата публикации"
     )
-    duration = models.PositiveSmallIntegerField("время приготовления")
+    duration = models.PositiveSmallIntegerField(
+        "время приготовления",
+        validators=[MinValueValidator(1)]
+    )
 
     class Meta:
         verbose_name = "Рецепт"

@@ -3,7 +3,6 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
-
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -32,6 +31,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django_password_validators',
+    'django_password_validators.password_history',
     'multiselectfield',
     'rest_framework',
     'sorl.thumbnail',
@@ -99,6 +100,12 @@ AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
+    {
+        'NAME': 'django_password_validators.password_history.password_validation.UniquePasswordsValidator',
+        'OPTIONS': {
+            'last_passwords': 5
+        },
+    },
 ]
 
 # Internationalization
@@ -137,7 +144,6 @@ REGISTRATION_AUTO_LOGIN = True
 REGISTRATION_FORM = 'users.forms.RegForm'
 LOGIN_REDIRECT_URL = 'index'
 LOGOUT_REDIRECT_URL = 'index'
-
 
 # === rest framework ===
 REST_FRAMEWORK = {
