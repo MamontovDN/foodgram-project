@@ -1,5 +1,6 @@
 from django.contrib import admin
-from django.db.models import Q
+
+# from django.db.models import Q
 from django_admin_multiple_choice_list_filter.list_filters import (
     MultipleChoiceListFilter,
 )
@@ -20,7 +21,7 @@ class IngredientItemInline(admin.TabularInline):
 
 
 """
-Фильтр для тегов, так как в multiselectedfield 
+Фильтр для тегов, так как в multiselectedfield
 нет поддержки стандартного list_filter
 """
 
@@ -31,6 +32,7 @@ class TagFilter(MultipleChoiceListFilter):
 
     def lookups(self, request, model_admin):
         return TAGS
+
     #
     # def queryset(self, request, queryset):
     #     if not self.value():
