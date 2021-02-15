@@ -1,11 +1,23 @@
+# работа сервера - фреймворк django
 django==3.1.5
+# обработка api запросов
 djangorestframework==3.12.2
+# поле множественного выбора в модели рецепта
 django-multiselectfield==0.1.12
+# валидатор на проверку уникальности пароля пользователя
+# (запрет повторений пароля)
 django-password-validators==1.4.0
+# регистрация с подтверждением по email
 django-registration-redux==2.9
+# WSGI HTTP Server
 gunicorn==20.0.4
+# работа с изображениями
 Pillow==8.1.0
+# библиотека для работы с БД PostgreSQL
 psycopg2-binary==2.8.5
+# библиотека для работы с файлом окружения
 python-dotenv==0.15.0
+# генерация pdf
 reportlab==3.5.59
+# создание миниатюр
 sorl-thumbnail==12.7.0

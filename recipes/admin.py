@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.db.models import Q
 
 from .models import (
     Recipe,
@@ -7,6 +8,7 @@ from .models import (
     Subscribe,
     ShopListItem,
     IngredientItem,
+    TAGS
 )
 
 
@@ -14,12 +16,30 @@ class IngredientItemInline(admin.TabularInline):
     model = Recipe.ingredients.through
 
 
+class TagFilter(admin.SimpleListFilter):
+    title = 'Теги'
+    parameter_name = 'tags'
+
+    def lookups(self, request, model_admin):
+        return TAGS
+
+    def queryset(self, request, queryset):
+        if not self.value():
+            return queryset
+        if self.value() == 'breakfast':
+            return queryset.filter(Q(tags__contains='breakfast'))
+        elif self.value() == 'dinner':
+            return queryset.filter(Q(tags__contains='dinner'))
+        elif self.value() == 'supper':
+            return queryset.filter(Q(tags__contains='supper'))
+
+
 class RecipeAdmin(admin.ModelAdmin):
     # filter_vertical = ("ingredients",)
     inlines = (IngredientItemInline,)
     list_display = ("pk", "title", "author", "tags")
     search_fields = ("title",)
-    list_filter = ("author", "title", "tags",)
+    list_filter = ("author", "title", TagFilter,)
     empty_value_display = "-пусто-"
 
 
