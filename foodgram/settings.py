@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_password_validators',
     'django_password_validators.password_history',
+    'django_admin_multiple_choice_list_filter',
     'multiselectfield',
     'rest_framework',
     'sorl.thumbnail',

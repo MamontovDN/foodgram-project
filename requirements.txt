@@ -2,6 +2,8 @@
 django==3.1.5
 # обработка api запросов
 djangorestframework==3.12.2
+# list_filter с множесственным выбором
+django-admin-multiple-choice-list-filter==0.1.1
 # поле множественного выбора в модели рецепта
 django-multiselectfield==0.1.12
 # валидатор на проверку уникальности пароля пользователя
