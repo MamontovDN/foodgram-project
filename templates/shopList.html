@@ -31,7 +31,13 @@
                 </li>
             {% endfor %}
         </ul>
-        <a target="blank" href="{% url 'generate_pdf' %}"><button class="button button_style_blue">Скачать список</button></a>
+        {% if shop_list_count > 0 %}
+            <a target="blank" href="{% url 'generate_pdf' %}">
+                <button class="button button_style_blue">Скачать список</button>
+            </a>
+        {% else %}
+            <button class="button button_style_blue">Нет покупок</button>
+        {% endif %}
     </div>
 </main>
 <script src="{% static 'js/js/config/config.js' %}"></script>

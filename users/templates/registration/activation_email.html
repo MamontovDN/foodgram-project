@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ru">
+
+<head>
+    <meta charset="UTF-8">
+    <title>{{ site.name }}Регистрация</title>
+</head>
+
+<body>
+<p>
+    Вы (или кто-то выдающий себя за вас) оставили заявку на регистрацию учетной
+    записи на {{ site.name }}.
+    Если это были не вы, то проигнорируйте это сообщение,
+    и ваш почтовый адрес будет удален из наших записей.
+</p>
+<p>
+    Чтобы активировать эту учетную запись,
+    перейдите по следующей ссылке в течение {{ expiration_days }} дней:
+</p>
+
+<p>
+    <a href="http://{{site.domain}}{% url 'registration_activate' activation_key %}">
+        по этой ссылке
+    </a>
+</p>
+<p>
+    Ваш foodgram-project!!!!
+</p>
+</body>
+
+</html>
