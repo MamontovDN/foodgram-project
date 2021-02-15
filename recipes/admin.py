@@ -11,7 +11,6 @@ from .models import (
     Favorites,
     Subscribe,
     ShopListItem,
-    IngredientItem,
     TAGS,
 )
 
