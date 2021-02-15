@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-# from django.db.models import Q
+from django.db.models import Q
 from django_admin_multiple_choice_list_filter.list_filters import (
     MultipleChoiceListFilter,
 )
@@ -21,8 +21,7 @@ class IngredientItemInline(admin.TabularInline):
 
 
 """
-Фильтр для тегов, так как в multiselectedfield
-нет поддержки стандартного list_filter
+Фильтр для тегов, с множественным выбором
 """
 
 
@@ -33,16 +32,14 @@ class TagFilter(MultipleChoiceListFilter):
     def lookups(self, request, model_admin):
         return TAGS
 
-    #
-    # def queryset(self, request, queryset):
-    #     if not self.value():
-    #         return queryset
-    #     if self.value() == "breakfast":
-    #         return queryset.filter(Q(tags__contains="breakfast"))
-    #     elif self.value() == "dinner":
-    #         return queryset.filter(Q(tags__contains="dinner"))
-    #     elif self.value() == "supper":
-    #         return queryset.filter(Q(tags__contains="supper"))
+    def queryset(self, request, queryset):
+        if not self.value():
+            return queryset
+        tags = self.value().split(',')
+        tag_filter = Q(tags__contains=tags[0])
+        for tag in tags[1:]:
+            tag_filter |= Q(tags__contains=tag)
+        return queryset.filter(tag_filter)
 
 
 class RecipeAdmin(admin.ModelAdmin):
