@@ -2,6 +2,9 @@ from django.urls import path, include, reverse_lazy
 from django.contrib.auth import views as auth_views
 
 urlpatterns = [
+    # Отдельно прописал url, чтобы указать формат письма HTML,
+    # иначе отправит как txt, поэтому в прошлый раз
+    # так странно ссылка выглядела
     path(
         "password/reset/",
         auth_views.PasswordResetView.as_view(

@@ -211,7 +211,7 @@ def generate_pdf_view(request):
     user = get_object_or_404(User, username=request.user)
     ing_dict = {}
     shop_list = user.shop_list.select_related("recipe")
-    if not shop_list:
+    if shop_list.count() == 0:
         redirect('shop_list')
     # генерируем словарь с ингредиентами
     for el in shop_list:
