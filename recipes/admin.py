@@ -83,14 +83,9 @@ class ShopListAdmin(admin.ModelAdmin):
     search_fields = ("recipe",)
 
 
-class IngredientItemAdmin(admin.ModelAdmin):
-    list_display = ("ingredient", "count")
-    list_filter = ("ingredient",)
-
-
 admin.site.register(Recipe, RecipeAdmin)
 admin.site.register(Ingredient, IngredientAdmin)
 admin.site.register(Favorites, FavoritesAdmin)
 admin.site.register(Subscribe, SubscribeAdmins)
 admin.site.register(ShopListItem, ShopListAdmin)
-admin.site.register(IngredientItem, IngredientItemAdmin)
+
