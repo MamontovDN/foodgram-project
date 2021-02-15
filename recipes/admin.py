@@ -11,7 +11,7 @@ from .models import (
 
 
 class IngredientItemInline(admin.TabularInline):
-    model = IngredientItem
+    model = Recipe.ingredients.through
 
 
 class RecipeAdmin(admin.ModelAdmin):
