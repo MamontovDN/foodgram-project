@@ -87,4 +87,3 @@ admin.site.register(Ingredient, IngredientAdmin)
 admin.site.register(Favorites, FavoritesAdmin)
 admin.site.register(Subscribe, SubscribeAdmins)
 admin.site.register(ShopListItem, ShopListAdmin)
-
