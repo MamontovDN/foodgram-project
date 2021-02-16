@@ -1,5 +1,4 @@
 from django.contrib import admin
-
 from django.db.models import Q
 from django_admin_multiple_choice_list_filter.list_filters import (
     MultipleChoiceListFilter,
@@ -11,7 +10,7 @@ from .models import (
     Favorites,
     Subscribe,
     ShopListItem,
-    TAGS,
+    TAGS, IngredientItem,
 )
 
 
@@ -38,10 +37,11 @@ class TagFilter(MultipleChoiceListFilter):
         return queryset.filter(tag_filter)
 
 
+@admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
     inlines = (IngredientItemInline,)
     list_display = ("pk", "title", "author", "tags", "get_favorite")
-    readonly_fields = ('get_favorite',)
+    readonly_fields = ("get_favorite",)
     search_fields = ("title",)
     list_filter = (
         "author",
@@ -56,6 +56,7 @@ class RecipeAdmin(admin.ModelAdmin):
     get_favorite.short_description = "В избранном"
 
 
+@admin.register(Ingredient)
 class IngredientAdmin(admin.ModelAdmin):
     list_display = (
         "pk",
@@ -67,26 +68,27 @@ class IngredientAdmin(admin.ModelAdmin):
     empty_value_display = "-пусто-"
 
 
+@admin.register(Favorites)
 class FavoritesAdmin(admin.ModelAdmin):
     list_display = ("user", "recipe")
     list_filter = ("user",)
     empty_value_display = "-пусто-"
 
 
+@admin.register(Subscribe)
 class SubscribeAdmins(admin.ModelAdmin):
     list_display = ("author", "user")
     list_filter = ("user", "author")
     empty_value_display = "-пусто-"
 
 
+@admin.register(ShopListItem)
 class ShopListAdmin(admin.ModelAdmin):
     list_display = ("user", "recipe")
     list_filter = ("user",)
     search_fields = ("recipe",)
 
 
-admin.site.register(Recipe, RecipeAdmin)
-admin.site.register(Ingredient, IngredientAdmin)
-admin.site.register(Favorites, FavoritesAdmin)
-admin.site.register(Subscribe, SubscribeAdmins)
-admin.site.register(ShopListItem, ShopListAdmin)
+@admin.register(IngredientItem)
+class IngredientItem(admin.ModelAdmin):
+    list_display = ("ingredient", "count")
