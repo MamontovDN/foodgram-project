@@ -7,8 +7,9 @@ from multiselectfield import MultiSelectField
 TAGS = (("breakfast", "Завтрак"), ("dinner", "Обед"), ("supper", "Ужин"))
 
 
-"""модель Ингредиента"""
 class Ingredient(models.Model):
+    """модель Ингредиента"""
+
     title = models.CharField(max_length=100, verbose_name="название")
     dimension = models.CharField(
         max_length=50,
@@ -26,8 +27,9 @@ class Ingredient(models.Model):
         return f"{self.title} - ...{self.dimension}"
 
 
-# модель Рецепта
 class Recipe(models.Model):
+    """модель Рецепта"""
+
     author = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="recipes"
     )
@@ -40,8 +42,7 @@ class Recipe(models.Model):
         auto_now_add=True, verbose_name="дата публикации"
     )
     duration = models.PositiveSmallIntegerField(
-        "время приготовления",
-        validators=[MinValueValidator(1)]
+        "время приготовления", validators=[MinValueValidator(1)]
     )
 
     class Meta:
@@ -52,8 +53,9 @@ class Recipe(models.Model):
         return f"{self.title} by {self.author} "
 
 
-# Модель Ингредиента с кол-вом для модели Рецепта
 class IngredientItem(models.Model):
+    """Модель Ингредиента с кол-вом для модели Рецепта"""
+
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     count = models.DecimalField(
         verbose_name="кол-во", max_digits=6, decimal_places=1
@@ -70,8 +72,9 @@ class IngredientItem(models.Model):
         )
 
 
-# модель Избранного
 class Favorites(models.Model):
+    """модель Избранного"""
+
     recipe = models.ForeignKey(
         Recipe, on_delete=models.CASCADE, related_name="fans"
     )
@@ -84,8 +87,9 @@ class Favorites(models.Model):
         verbose_name_plural = "Избранные"
 
 
-# модель Подписки
 class Subscribe(models.Model):
+    """модель Подписки"""
+
     author = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="subscribers"
     )
@@ -98,8 +102,9 @@ class Subscribe(models.Model):
         verbose_name_plural = "Подписки"
 
 
-# модель Списка покупок
 class ShopListItem(models.Model):
+    """модель Списка покупок"""
+
     user = models.ForeignKey(
         User, on_delete=models.CASCADE, related_name="shop_list"
     )
