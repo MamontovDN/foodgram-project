@@ -34,7 +34,7 @@ class TagFilter(MultipleChoiceListFilter):
     def queryset(self, request, queryset):
         if not self.value():
             return queryset
-        tags = self.value().split(',')
+        tags = self.value().split(",")
         tag_filter = Q(tags__contains=tags[0])
         for tag in tags[1:]:
             tag_filter |= Q(tags__contains=tag)
@@ -43,6 +43,7 @@ class TagFilter(MultipleChoiceListFilter):
 
 class RecipeAdmin(admin.ModelAdmin):
     inlines = (IngredientItemInline,)
+    fields = ("__all__", "get_favorite")
     list_display = ("pk", "title", "author", "tags")
     search_fields = ("title",)
     list_filter = (
@@ -51,6 +52,11 @@ class RecipeAdmin(admin.ModelAdmin):
         TagFilter,
     )
     empty_value_display = "-пусто-"
+
+    def get_favorite(self, obj):
+        return obj.fans.count()
+
+    get_favorite.short_description = "В избранном"
 
 
 class IngredientAdmin(admin.ModelAdmin):

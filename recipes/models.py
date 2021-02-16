@@ -7,7 +7,7 @@ from multiselectfield import MultiSelectField
 TAGS = (("breakfast", "Завтрак"), ("dinner", "Обед"), ("supper", "Ужин"))
 
 
-# модель Ингредиента
+"""модель Ингредиента"""
 class Ingredient(models.Model):
     title = models.CharField(max_length=100, verbose_name="название")
     dimension = models.CharField(
