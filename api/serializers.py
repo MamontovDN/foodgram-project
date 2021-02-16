@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 from recipes.models import (
     Ingredient,
@@ -36,6 +37,11 @@ class SubscribeSerializer(serializers.ModelSerializer):
     class Meta:
         fields = ["id", "user"]
         model = Subscribe
+
+    def validate(self, attrs):
+        if attrs['author'] == attrs['user']:
+            raise serializers.ValidationError('Нельзя подписаться на себя')
+        return super().validate(attrs)
 
 
 class ShopListItemSerializer(serializers.ModelSerializer):

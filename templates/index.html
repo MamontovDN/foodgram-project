@@ -2,7 +2,7 @@
 {% block meta %}
 {% load css_filter %}
 <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+      content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 <meta http-equiv="X-UA-Compatible" content="ie=edge">
 {% endblock %}
 {% block title %} {{ title }} {% endblock %}
@@ -22,7 +22,7 @@
         {% endif %}
     </div>
     {% if user.is_authenticated and url_name == 'profile' %}
-
+        {% if author != user %}
         <div class="author-subscribe" data-author="{{ author.id }}">
             <p style="padding: 0 0 2em 0;">
                 {% if not author.id|subscribes:user %}
@@ -36,6 +36,7 @@
                 {% endif %}
             </p>
         </div>
+        {% endif %}
     {% endif %}
     <div class="card-list">
         {% for recipe in page %}

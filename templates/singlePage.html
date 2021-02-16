@@ -25,10 +25,12 @@
                             {% if recipe.id|favorites:request.user %}
                                 <button class="button button_style_none" name="favorites">
                                     <span class="icon-favorite icon-favorite_active"></span>
+                                    <div class="single-card__favorite-tooltip tooltip">Убрать из избранное</div>
                                 </button>
                             {% else %}
                                 <button class="button button_style_none" name="favorites" data-out>
                                     <span class="icon-favorite"></span>
+                                    <div class="single-card__favorite-tooltip tooltip">Добавить в избранное</div>
                                 </button>
                             {% endif %}
                         </div>
@@ -86,6 +88,7 @@
                             </button>
                         {% endif %}
                     </li>
+                    {% if recipe.author != user %}
                     <li class="single-card__item">
                         {% if not recipe.author.id|subscribes:user %}
                             <button class="button button_style_light-blue button_size_subscribe" name="subscribe" data-out>
@@ -97,6 +100,7 @@
                             </button>
                         {% endif %}
                     </li>
+                    {% endif %}
                 </ul>
                 {% endif %}
                 <div class="single-card__section">

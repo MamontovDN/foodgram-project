@@ -35,7 +35,10 @@
                 <button class="button button_style_blue">Скачать список</button>
             </a>
         {% else %}
-            <button class="button button_style_blue">Нет покупок</button>
+            <h2 class="main__title" style="font-size:30px">Нет покупок</h2>
+            <a target="blank" href="{% url 'index' %}">
+                <button class="button button_style_blue">Открыть рецепты</button>
+            </a>
         {% endif %}
     </div>
 </main>
