@@ -1,5 +1,5 @@
-from django.shortcuts import get_object_or_404
 from rest_framework import serializers
+
 from recipes.models import (
     Ingredient,
     Favorites,
@@ -7,7 +7,6 @@ from recipes.models import (
     Subscribe,
     ShopListItem,
 )
-
 from users.models import User
 
 
