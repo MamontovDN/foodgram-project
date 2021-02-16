@@ -41,7 +41,7 @@ class TagFilter(MultipleChoiceListFilter):
 class RecipeAdmin(admin.ModelAdmin):
     inlines = (IngredientItemInline,)
     list_display = ("pk", "title", "author", "tags", "get_favorite")
-    readonly_fields = ("get_favorite",)
+    readonly_fields = ("get_favorite", "ingredients")
     search_fields = ("title",)
     list_filter = (
         "author",
