@@ -19,10 +19,9 @@ class IngredientItemInline(admin.TabularInline):
     model = Recipe.ingredients.through
 
 
-
-
 class TagFilter(MultipleChoiceListFilter):
     """Фильтр для тегов, с множественным выбором"""
+
     title = "Теги"
     parameter_name = "tags"
 

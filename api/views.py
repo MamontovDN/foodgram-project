@@ -13,13 +13,12 @@ from .serializers import (
 from recipes.models import Ingredient, Favorites, Subscribe, ShopListItem
 
 
-"""
-класс родитель с переопределенным мнтодом DELETE для Subscribe, Favorite и
-Purchase
-"""
-
-
 class Mix(generics.CreateAPIView, generics.DestroyAPIView):
+    """
+    класс родитель с переопределенным мнтодом DELETE для Subscribe, Favorite и
+    Purchase
+    """
+
     api_name = ""
 
     def delete(self, request, *args, **kwargs):
