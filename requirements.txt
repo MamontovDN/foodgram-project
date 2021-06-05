@@ -1,5 +1,5 @@
 # работа сервера - фреймворк django
-django==3.1.5
+django==3.1.9
 # обработка api запросов
 djangorestframework==3.12.2
 # list_filter с множесственным выбором
