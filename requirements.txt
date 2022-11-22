@@ -14,7 +14,7 @@ django-registration-redux==2.9
 # WSGI HTTP Server
 gunicorn==20.0.4
 # работа с изображениями
-Pillow==8.1.0
+Pillow==9.3.0
 # библиотека для работы с БД PostgreSQL
 psycopg2-binary==2.8.5
 # библиотека для работы с файлом окружения
